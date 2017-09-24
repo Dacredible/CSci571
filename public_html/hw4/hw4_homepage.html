@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="CSci571 homework4 homepage">
+        <title>Homework 4</title>
+       <!-- <link rel="stylesheet" type="text/css" href="hw4_stylesheet.css">-->
+        <style>
+            h1{
+               text-align: center;
+               margin-top: 150px;
+               font-size: 1em;
+            }
+            div{
+               text-align: center;
+            }
+            input[type=submit]{
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Enter URL for Airlines List JSON File</h1>
+        <div>
+            <form action="">
+            <input type="text" name="URL" id="textfield" value="" maxlength="225">
+                <br>
+            <input type="button" name="Submit" id="btn" value="Submit Query" onclick="showForm(this.form)">
+            </form>
+        </div>
+
+    <script type="text/javascript">
+        var headerNodes, rows;
+        function showForm(text){
+            var input = text.URL.value;
+                if(input == ""){
+                    alert("Please Input URL");
+                    return 1;
+                }
+                function loadJSON(url){
+                    if(window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp=new XMLHttpRequest();
+                    }else{// code for IE6, IE5
+                        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    try{
+                    xmlhttp.open("GET",url,false);
+                    xmlhttp.send();
+                    }catch(e){
+                     alert("Please Input a valid Json File name");
+                        return ;
+                    }
+                    try{
+                    jsonObj = JSON.parse(xmlhttp.responseText);
+                    } catch(e){
+                        alert("Please Input a valid JSON File");
+                    }
+                    return jsonObj;
+                }
+            var jsonObj = loadJSON(input);
+            if(window.ActiveXObject){//if IE, simply execute script (due to async prop).
+                if(jsonObj.parseError.errorCode != 0){
+                    var myErr = jsonObj.parseError;
+                    generateError(jsonObj);
+                    hWin = window.open("","Error","height=300,width=340");
+                    hWin.document.write(html_text);
+                }else{
+                    generateHTML(jsonObj);
+                    hWin = window.open("", "hw4", "height=800,width=900"); hWin.document.write(html_text);
+                }
+            }else{//else if FF, execute script once JSON object has loaded
+                    jsonObj.onload=generateHTML(jsonObj);
+                    hWin = window.open("", "hw4", "height=800,width=1000"); hWin.document.write(html_text); } 
+            hWin.document.close(); 
+                
+        }
+        
+        function generateHTML(jsonObj){
+            root = jsonObj.documentElement;
+            html_text = "<!DOCTYPE HTML><html><head><title>US Airline Listing</title></head>";
+            html_text += "<body><table border = '2'><thead><tr>";
+            var headerNodes = jsonObj.Mainline.Table.Header.Data;
+//            console.log(headerNodes);
+            //out put the headers
+            for(i=0;i<headerNodes.length;i++){
+                html_text += "<th>"+headerNodes[i]+"</th>";
+            }
+            html_text += "</tr><thead>";
+            //output the body
+            html_text += "<tbody>";
+            rows = jsonObj.Mainline.Table.Row;
+            if(typeof(rows) == "undefined"){
+                console.warn("invalid JSON");
+                alert("Invalid JSON File");
+            }
+            for(i=0;i<rows.length;i++){
+                planeNodeList = rows[i];
+                var aircraft_keys = Object.keys(planeNodeList);
+                html_text += "<tr>";
+//                console.log(planeNodeList.IATA);
+//                console.log(aircraft_keys);
+                for(j=0;j<aircraft_keys.length;j++){
+                    var prop = aircraft_keys[j];
+                    if(prop == "Plane"){//handle Plane image
+                        html_text += "<td><img src='"+planeNodeList[prop]+"' width='320' height='180'></td>";
+                    }else if(prop == "Hubs"){//handle Hubs
+//                        html_text += "<td>"+planeNodeList[prop].length+"</td>";
+//                        console.log(planeNodeList[prop]);
+                        hubKey = "Hub";
+                        hubList = planeNodeList[prop][hubKey];
+//                        console.log(hubList);
+                        html_text += "<td><ul>";
+                        for(k=0;k<hubList.length;k++){
+                         if(k==0){
+                             html_text += "<li><b>"+hubList[k]+"</b></li>";
+                         }else{
+                             html_text += "<li>"+hubList[k]+"</li>";
+                         }   
+                        }
+                        html_text += "</ul></td>";
+                    }else if(prop == "HomePage"){//handle links
+                        html_text += "<td><a href='"+planeNodeList[prop]+"'>"+ planeNodeList[prop]+"</a></td>";
+                    }else{
+                        html_text+="<td>"+ planeNodeList[prop] +"</td>";
+                    }
+                }
+                html_text +="</tr>";
+            }
+                html_text += "</tbody></table></body></html>";
+        }
+        
+        function generateError(jsonObj){
+            alert("invalid JSON");
+        }
+        
+    </script>    
+    <noscript /></body>
+</html>
