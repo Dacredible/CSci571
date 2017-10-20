@@ -30,6 +30,7 @@
             function clearAll(){
                 document.getElementById("stockText").value = "";
                 document.getElementById("resultDiv").innerHTML = "";
+                document.getElementById("errorTable").style.display = "none";
             }
         </script>
         <title>Homework 6</title>
@@ -372,7 +373,9 @@ HTML;
 //                    console.log(today);
                     
                     var maxValue = getMaxOfArray(price);
-                    var minValue = getMinOfArray(price);
+                    var minValue = getMinOfArray(price)-10;
+                    var maxVolume = getMaxOfArray(volume)*3;
+//                    var minVolume = getMinOfArray(volume);
                     console.log(maxValue,minValue);
                     function drawChart(){
                         var chart1 = Highcharts.chart('highChartsFigure', {
@@ -381,7 +384,7 @@ HTML;
                                         },
 
                                         subtitle: {
-                                            text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>',
+                                            text: '<a href=" https://www.alphavantage.co/" target="_blank">Source: Alpha Vantage</a>',
                                             style: {
                                                 color: "blue"
                                             }
@@ -398,12 +401,23 @@ HTML;
                                             title: {//1
                                                 text: 'Volume'
                                             },
+                                            max: maxVolume,
+                                            min: 0,
                                             tickInterval: 50000000,
                                             opposite: true
                                         }],
                                         xAxis: {
                                             tickInterval:5,
-                                            categories:dates  
+                                            categories:dates,    
+                                            tickPositioner: function() {
+                                            let res = [];
+                                            for(let i = 0; i < this.categories.length; i++) {
+                                                if(i % 5 == 0) res.push(this.categories.length - 1 - i);
+                                            }
+                                            return res;
+                                            },
+                                            rotation: -45
+
                                         },
                                         legend: {
                                             layout: 'vertical',
@@ -418,7 +432,9 @@ HTML;
                                                 }
                                             }
                                         },
-
+                                        tooltip:{
+                                            pointFormat: metaData['2. Symbol']+":{point.y:.2f}"
+                                        },
                                         series: [{
                                             yAxis: 0,
                                             name: metaData['2. Symbol'],
@@ -573,7 +589,7 @@ HTML;
                     },
 
                     subtitle: {
-                        text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>',
+                        text: '<a href=" https://www.alphavantage.co/" target="_blank">Source: Alpha Vantage</a>',
                                             style: {
                                                 color: "blue"
                                             }
@@ -624,7 +640,7 @@ HTML;
                     },
 
                     subtitle: {
-                        text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>',
+                        text: '<a href=" https://www.alphavantage.co/" target="_blank">Source: Alpha Vantage</a>',
                                             style: {
                                                 color: "blue"
                                             }
@@ -655,10 +671,10 @@ HTML;
 
                     series: [{
                         color: '#eb4d47',
-                        name: 'slowD',
+                        name: symbol+' slowD',
                         data: yData1
                     },{
-                        name: 'slowK',
+                        name: symbol+' slowK',
                         data: yData2
                     }]
 
@@ -679,7 +695,7 @@ HTML;
                     },
 
                     subtitle: {
-                        text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>',
+                        text: '<a href=" https://www.alphavantage.co/" target="_blank">Source: Alpha Vantage</a>',
                                             style: {
                                                 color: "blue"
                                             }
@@ -710,13 +726,13 @@ HTML;
 
                     series: [{
                         color: '#eb4d47',
-                        name: 'Real Lower Band',
+                        name: symbol+' Real Lower Band',
                         data: yData1
                     },{
-                        name: 'Real Middle Band',
+                        name: symbol+' Real Middle Band',
                         data: yData2
                     },{
-                        name: 'Real Upper Band',
+                        name: symbol+' Real Upper Band',
                         data: yData3
                     }]
 
@@ -736,7 +752,7 @@ HTML;
                     },
 
                     subtitle: {
-                        text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>',
+                        text: '<a href=" https://www.alphavantage.co/" target="_blank">Source: Alpha Vantage</a>',
                                             style: {
                                                 color: "blue"
                                             }
@@ -767,13 +783,13 @@ HTML;
 
                     series: [{
                         color: '#eb4d47',
-                        name: 'MACD',
+                        name: symbol+' MACD',
                         data: yData1
                     },{
-                        name: 'MACD_Hist',
+                        name: symbol+' MACD_Hist',
                         data: yData2
                     },{
-                        name: 'MACD_Signal',
+                        name: symbol+' MACD_Signal',
                         data: yData3
                     }]
 
