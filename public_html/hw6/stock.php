@@ -10,6 +10,7 @@
         <meta charset="utf-8">
         <meta name="description" content="CSci571 homework6 homepage">
         <script src="https://code.highcharts.com/highcharts.src.js"></script>
+        <script src="http://code.highcharts.com/modules/exporting.js"></script>
         <script type="text/javascript">
             window.onload = function(){
                 prepareEventHandlers();
@@ -111,6 +112,16 @@
             span{
                 color: blue;
             }
+            a{
+                color: blue;
+                text-decoration: none;
+            }
+            #newsTable span{
+                color: black;
+            }
+            #errorTable td{
+                width: 1400px;
+            }
         </style>
     </head>
     
@@ -129,7 +140,17 @@
                 <p>*- Mandatory fields.</p>
             </form>
         </div>
-        
+        <?php
+                   $html = <<< HTML
+                   <table id="errorTable" style="display:none">
+                    <tr>
+                        <th>Error</th>
+                        <td>Error: NO recored has been found, please enter a valid symbol</td>
+                    </tr>
+                    </table>
+HTML;
+                   echo $html;
+        ?>
         <div class="result" id="resultDiv" style="display:block">
            <div class="stockTable">
             <?php
@@ -272,17 +293,8 @@ HTML;
                     }
                     echo $html;
                 }
-               function makeErrorTable(){
-                   $html = <<< HTML
-                   <table class="stockTable">
-                    <tr>
-                        <th>Error</th>
-                        <td>Error: NO recored has been found, please enter a valid symbol</td>
-                    </tr>
-                    </table>
-HTML;
-                   echo $html;
-               }
+
+               
             ?>
             <?php
                //print error table
@@ -290,18 +302,21 @@ HTML;
                 $rawJsonData = getJsonFromAlpha($symbol);
                 if(!array_key_exists("Error Message",$rawJsonData)){
                     makeTable($rawJsonData);
+                    echo '<script>document.getElementById("errorTable").style.display = "none";</script>';
                     $error = 0;
-                }else
-                    makeErrorTable();
+                }else{
                     $error = 1;
+                    echo '<script>document.getElementById("errorTable").style.display = "block";
+                    document.getElementById("resultDiv").style.display = "none";
+                    console("hide result");</script>';
+                }
                 }
             
             ?>
             </div>
             <div id="highChartsFigure">
                 <?php
-
-                if($symbol != ""){
+                if($symbol != "" && $error == 0){
                     if( ! ini_get('date.timezone') )
                     {
                         date_default_timezone_set('GMT');
@@ -331,6 +346,15 @@ HTML;
                 }
                 ?>
                 <script type="text/javascript">
+                    // Get Max value from array
+                    function getMaxOfArray(numArray) {
+                        return Math.max.apply(null, numArray);
+                    }
+
+                    // Get Min value from array
+                    function getMinOfArray(numArray) {
+                        return Math.min.apply(null, numArray);
+                    }
                     var metaData = <?php echo json_encode($rawJsonData['Meta Data']);?>;
                     var jsonData = <?php echo json_encode($jsonData); ?>;
                     var dates = <?php echo json_encode($dates); ?>;
@@ -342,10 +366,14 @@ HTML;
                     var chart1;
 //                    console.log(metaData);
 //                    console.log(jsonData);
-                    console.log(volume);
-                    console.log(dates);
-                    console.log(price);
-                    console.log(today);
+//                    console.log(volume);
+//                    console.log(dates);
+//                    console.log(price);
+//                    console.log(today);
+                    
+                    var maxValue = getMaxOfArray(price);
+                    var minValue = getMinOfArray(price);
+                    console.log(maxValue,minValue);
                     function drawChart(){
                         var chart1 = Highcharts.chart('highChartsFigure', {
                                         title: {
@@ -353,16 +381,20 @@ HTML;
                                         },
 
                                         subtitle: {
-                                            text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>'
+                                            text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>',
+                                            style: {
+                                                color: "blue"
+                                            }
                                         },
 
                                         yAxis: [{//0
                                             title: {
                                                 text: 'Stock Price'
                                             },
-                                            tickInterval: 5
+                                            tickInterval: 5,
+                                            max: maxValue,
+                                            min: minValue
                                         },{
-                                            max: 320000000,
                                             title: {//1
                                                 text: 'Volume'
                                             },
@@ -383,9 +415,6 @@ HTML;
                                             series: {
                                                 label: {
                                                     connectorAllowed: false
-                                                },
-                                                marker:{
-                                                    enable: false
                                                 }
                                             }
                                         },
@@ -395,6 +424,9 @@ HTML;
                                             name: metaData['2. Symbol'],
                                             type:'area',
                                             color: '#eb4d47',
+                                            marker: {
+                                                enabled: false
+                                            },
                                             data: price
                                         },{
                                             yAxis: 1,
@@ -541,7 +573,10 @@ HTML;
                     },
 
                     subtitle: {
-                        text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>'
+                        text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>',
+                                            style: {
+                                                color: "blue"
+                                            }
                     },
 
                     yAxis: { 
@@ -589,7 +624,10 @@ HTML;
                     },
 
                     subtitle: {
-                        text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>'
+                        text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>',
+                                            style: {
+                                                color: "blue"
+                                            }
                     },
 
                     yAxis: { 
@@ -641,7 +679,10 @@ HTML;
                     },
 
                     subtitle: {
-                        text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>'
+                        text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>',
+                                            style: {
+                                                color: "blue"
+                                            }
                     },
 
                     yAxis: { 
@@ -695,7 +736,10 @@ HTML;
                     },
 
                     subtitle: {
-                        text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>'
+                        text: '<a href=" https://www.alphavantage.co/">Source: Alpha Vantage</a>',
+                                            style: {
+                                                color: "blue"
+                                            }
                     },
 
                     yAxis: { 
@@ -753,12 +797,22 @@ HTML;
                  var newstemp = <?php echo json_encode($xmlData); ?>;
                  var newsData = new Array();
                 newsData = newstemp.channel.item;
-                    console.log(newsData);
+                 var news = new Array();
+                    for(var i=0;i<newsData.length;i++){
+                        if(newsData[i].link.includes('article')){
+                            news.push(newsData[i]);
+                        }
+                        if(news.length >= 5) break;
+                    }
+                    console.log(news);
+                    
+                    
                     //draw news table
+                    
                 var html_text = "<table id='newsTable' style='display:none;'>";
                 for(var i = 0; i<5;i++){
                     html_text += "<tr>";
-                    html_text += "<td class='news'><a href='"+newsData[i].link+"' target='_blank'>"+newsData[i].title+"</a><span>&nbsp;&nbsp;&nbsp;Publicated Time:"+newsData[i].pubDate+"</span></td>";
+                    html_text += "<td class='news'><a href='"+news[i].link+"' target='_blank'>"+news[i].title+"</a><span>&nbsp;&nbsp;&nbsp;Publicated Time:"+news[i].pubDate.substring(0,news[i].pubDate.indexOf('-'))+"</span></td>";
                     html_text += "</tr>";
                 }
 
