@@ -385,6 +385,7 @@ HTML;
 
                                         subtitle: {
                                             text: '<a href=" https://www.alphavantage.co/" target="_blank">Source: Alpha Vantage</a>',
+                                            useHTML: true,
                                             style: {
                                                 color: "blue"
                                             }
@@ -590,6 +591,7 @@ HTML;
 
                     subtitle: {
                         text: '<a href=" https://www.alphavantage.co/" target="_blank">Source: Alpha Vantage</a>',
+                        useHTML: true,
                                             style: {
                                                 color: "blue"
                                             }
@@ -641,6 +643,7 @@ HTML;
 
                     subtitle: {
                         text: '<a href=" https://www.alphavantage.co/" target="_blank">Source: Alpha Vantage</a>',
+                        useHTML: true,
                                             style: {
                                                 color: "blue"
                                             }
@@ -696,6 +699,7 @@ HTML;
 
                     subtitle: {
                         text: '<a href=" https://www.alphavantage.co/" target="_blank">Source: Alpha Vantage</a>',
+                        useHTML: true,
                                             style: {
                                                 color: "blue"
                                             }
@@ -753,6 +757,7 @@ HTML;
 
                     subtitle: {
                         text: '<a href=" https://www.alphavantage.co/" target="_blank">Source: Alpha Vantage</a>',
+                        useHTML: true,
                                             style: {
                                                 color: "blue"
                                             }
