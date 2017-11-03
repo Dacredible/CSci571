@@ -132,7 +132,7 @@
             <hr>
             <form class="" id="searchForm" method="post" action="stock.php">
                 Enter Stock Ticker Symbol:* 
-                <input type="text" name="stockSymbol" id="stockText" value="<?php echo htmlspecialchars($symbol); ?>" maxlength="225">
+                <input type="text" name="stockSymbol" id="stockText" value="<?php echo htmlspecialchars($symbol); ?>" maxlength="225" placeholder="e.g. MSFT">
                 <br>
                 <div class="btns">
                 <input type="submit" name="Search" id="searchBtn" value="Search">
@@ -178,6 +178,7 @@ HTML;
                     $today_close = $JD['Time Series (Daily)'][$today]['4. close'];
                     $previous_close = $JD['Time Series (Daily)'][$days[1]]['4. close'];
                     $change = $today_close - $previous_close;
+                    $change = number_format($change,4);
                     $change_percent = $change / $previous_close;
                     $change_percent = number_format($change_percent*100,2);
 
@@ -202,11 +203,11 @@ HTML;
                     </tr>
                     <tr>
                         <th>Change</th>
-                        <td>{$change}<img src="http://cs-server.usc.edu:45678/hw/hw6/images/Green_Arrow_Up.png" width="15px" height="15px"></td>
+                        <td>{$change}&nbsp;<img src="http://cs-server.usc.edu:45678/hw/hw6/images/Green_Arrow_Up.png" width="15px" height="15px"></td>
                     </tr>
                     <tr>
                         <th>Change Percent</th>
-                        <td>{$change_percent}%<img src="http://cs-server.usc.edu:45678/hw/hw6/images/Green_Arrow_Up.png" width="15px" height="15px"></td>
+                        <td>{$change_percent}%&nbsp;<img src="http://cs-server.usc.edu:45678/hw/hw6/images/Green_Arrow_Up.png" width="15px" height="15px"></td>
                     </tr>
                     <tr>
                         <th>Day's Range</th>
@@ -223,15 +224,15 @@ HTML;
                     <tr>
                         <th>Indicators</th>
                         <td>
-                        <span id="Price" onClick="showFigure(this.id)">Price</span>&nbsp;&nbsp;
-                        <span id="SMA" onClick="showFigure(this.id)">SMA</span>&nbsp;&nbsp;
-                        <span id="EMA" onClick="showFigure(this.id)">EMA</span>&nbsp;&nbsp;
-                        <span id="STOCH" onClick="showFigure(this.id)">STOCH</span>&nbsp;&nbsp;
-                        <span id="RSI" onClick="showFigure(this.id)">RSI</span>&nbsp;&nbsp;
-                        <span id="ADX" onClick="showFigure(this.id)">ADX</span>&nbsp;&nbsp;
-                        <span id="CCI" onClick="showFigure(this.id)">CCI</span>&nbsp;&nbsp;
-                        <span id="BBANDS" onClick="showFigure(this.id)">BBANDS</span>&nbsp;&nbsp;
-                        <span id="MACD" onClick="showFigure(this.id)">MACD</span>
+                        <span id="Price" onClick="showFigure(this.id)" style="cursor:pointer">Price</span>&nbsp;&nbsp;
+                        <span id="SMA" onClick="showFigure(this.id)" style="cursor:pointer">SMA</span>&nbsp;&nbsp;
+                        <span id="EMA" onClick="showFigure(this.id)" style="cursor:pointer">EMA</span>&nbsp;&nbsp;
+                        <span id="STOCH" onClick="showFigure(this.id)" style="cursor:pointer">STOCH</span>&nbsp;&nbsp;
+                        <span id="RSI" onClick="showFigure(this.id)" style="cursor:pointer">RSI</span>&nbsp;&nbsp;
+                        <span id="ADX" onClick="showFigure(this.id)" style="cursor:pointer">ADX</span>&nbsp;&nbsp;
+                        <span id="CCI" onClick="showFigure(this.id)" style="cursor:pointer">CCI</span>&nbsp;&nbsp;
+                        <span id="BBANDS" onClick="showFigure(this.id)" style="cursor:pointer">BBANDS</span>&nbsp;&nbsp;
+                        <span id="MACD" onClick="showFigure(this.id)" style="cursor:pointer">MACD</span>
                         </td>
                     </tr>
                     </table>
@@ -257,11 +258,11 @@ HTML;
                     </tr>
                     <tr>
                         <th>Change</th>
-                        <td>{$change}<img src="http://cs-server.usc.edu:45678/hw/hw6/images/Red_Arrow_Down.png" width="15px" height="15px"></td>
+                        <td>{$change}&nbsp;<img src="http://cs-server.usc.edu:45678/hw/hw6/images/Red_Arrow_Down.png" width="15px" height="15px"></td>
                     </tr>
                     <tr>
                         <th>Change Percent</th>
-                        <td>{$change_percent}%<img src="http://cs-server.usc.edu:45678/hw/hw6/images/Red_Arrow_Down.png" width="15px" height="15px"></td>
+                        <td>{$change_percent}%&nbsp;<img src="http://cs-server.usc.edu:45678/hw/hw6/images/Red_Arrow_Down.png" width="15px" height="15px"></td>
                     </tr>
                     <tr>
                         <th>Day's Range</th>
@@ -278,15 +279,15 @@ HTML;
                     <tr>
                         <th>Indicators</th>
                         <td>
-                        <span id="Price" onClick="showFigure(this.id)">Price</span>&nbsp;&nbsp;
-                        <span id="SMA" onClick="showFigure(this.id)">SMA</span>&nbsp;&nbsp;
-                        <span id="EMA" onClick="showFigure(this.id)">EMA</span>&nbsp;&nbsp;
-                        <span id="STOCH" onClick="showFigure(this.id)">STOCH</span>&nbsp;&nbsp;
-                        <span id="RSI" onClick="showFigure(this.id)">RSI</span>&nbsp;&nbsp;
-                        <span id="ADX" onClick="showFigure(this.id)">ADX</span>&nbsp;&nbsp;
-                        <span id="CCI" onClick="showFigure(this.id)">CCI</span>&nbsp;&nbsp;
-                        <span id="BBANDS" onClick="showFigure(this.id)">BBANDS</span>&nbsp;&nbsp;
-                        <span id="MACD" onClick="showFigure(this.id)">MACD</span>
+                        <span id="Price" onClick="showFigure(this.id)" style="cursor:pointer">Price</span>&nbsp;&nbsp;
+                        <span id="SMA" onClick="showFigure(this.id)" style="cursor:pointer">SMA</span>&nbsp;&nbsp;
+                        <span id="EMA" onClick="showFigure(this.id)" style="cursor:pointer">EMA</span>&nbsp;&nbsp;
+                        <span id="STOCH" onClick="showFigure(this.id)" style="cursor:pointer">STOCH</span>&nbsp;&nbsp;
+                        <span id="RSI" onClick="showFigure(this.id)" style="cursor:pointer">RSI</span>&nbsp;&nbsp;
+                        <span id="ADX" onClick="showFigure(this.id)" style="cursor:pointer">ADX</span>&nbsp;&nbsp;
+                        <span id="CCI" onClick="showFigure(this.id)" style="cursor:pointer">CCI</span>&nbsp;&nbsp;
+                        <span id="BBANDS" onClick="showFigure(this.id)" style="cursor:pointer">BBANDS</span>&nbsp;&nbsp;
+                        <span id="MACD" onClick="showFigure(this.id)" style="cursor:pointer">MACD</span>
                         </td>
                     </tr>
                     </table>
@@ -448,7 +449,7 @@ HTML;
                                         },{
                                             yAxis: 1,
                                             type: 'column',
-                                            name: 'volume',
+                                            name: metaData['2. Symbol']+' volume',
                                             color: 'white',
                                             data: volume
                                         }],
@@ -831,7 +832,7 @@ HTML;
                     //draw news table
                     
                 var html_text = "<table id='newsTable' style='display:none;'>";
-                for(var i = 0; i<5;i++){
+                for(var i = 0; i<news.length;i++){
                     html_text += "<tr>";
                     html_text += "<td class='news'><a href='"+news[i].link+"' target='_blank'>"+news[i].title+"</a><span>&nbsp;&nbsp;&nbsp;Publicated Time:"+news[i].pubDate.substring(0,news[i].pubDate.indexOf('-'))+"</span></td>";
                     html_text += "</tr>";
